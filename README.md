@@ -14,17 +14,14 @@ A Python framework for building concurrent, message-driven agent systems with st
 
 ```bash
 pip install agent-framework
-```
 
 For development:
-```
-git clone https://github.com/your-username/agent-framework.git
+git clone https://github.com/Ayushi-000/agent-framework.git
 cd agent-framework
 pip install -e .[dev]
-```
+
 Quick Start
 Create an agent:
-```
 from agent_framework import Agent, AgentConfig
 
 class MyAgent(Agent):
@@ -43,7 +40,7 @@ await scheduler.run()
 
 # Send a message
 await bus.send("agent1", {"text": "Hello"})
-```
+
 Documentation
 Core Components
 File	Purpose
@@ -53,7 +50,6 @@ core/scheduler.py	Execution control
 models/config.py	Pydantic model definitions
 
 Agent Interface:
-```
 class MyAgent(Agent):
     async def start(self):
         """Initialize resources"""
@@ -63,9 +59,7 @@ class MyAgent(Agent):
     
     async def terminate(self):
         """Cleanup resources"""
-```
 Message Bus API:
-```
 bus = MessageBus()
 
 # Pub/sub
@@ -93,7 +87,7 @@ class SensorMessage(BaseModel):
 
 msg = SensorMessage(sensor_id="temp1", value=22.5)
 await bus.send("logger", msg.dict())
-```
+
 Development
 Running Tests
 pytest tests/ --cov=agent_framework --cov-report=html
@@ -130,7 +124,28 @@ This version:
 8. Has clear contribution guidelines
 9. Is properly spaced for readability on GitHub
 
-## 👋 Contributed by Ayushi Johari  
-Added README improvements as a first contribution.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
