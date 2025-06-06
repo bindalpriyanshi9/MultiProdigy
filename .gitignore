@@ -1,0 +1,9 @@
+# Ignore Python build artifacts
+*.egg-info/
+build/
+dist/
+
+# VS Code and Pytest cache
+.vscode/
+.pytest_cache/
+__pycache__/
