@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "prodigal-ai-agent"
+version = "0.1.0"
+description = "Offline AI Agent Framework using Ollama, with message bus and multi-agent architecture"
+authors = ["Ayushi Johari, Abhay Maheshwari, Madhav Seekri"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "prodigal_agent" }]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pydantic = "^2.5.3"
+ollama = "^0.1.7"
+pydantic-settings = "^2.9.1"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
