@@ -4,7 +4,7 @@
 ## Installation
 
 ```bash
-pip install prodigal-ai-agents
+pip install MultiProdigy
 ```
 
 OR
