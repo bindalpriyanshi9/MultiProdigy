@@ -2,7 +2,7 @@ name: Setup Repo Automation
 
 on:
   push:
-    branches: [setup]
+    branches: [main, develop]
 
 jobs:
   repo-setup:
