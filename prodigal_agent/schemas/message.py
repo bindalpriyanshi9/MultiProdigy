@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+from pydantic import BaseModel
+
+class Message(BaseModel):
+    sender: str
+    recipient: str  # ✅ Keep this consistent
+    content: str
+=======
 from pydantic import BaseModel, Field
 
 class Message(BaseModel):
@@ -13,3 +21,4 @@ class Message(BaseModel):
             content=new_content,
             metadata=self.metadata or {}  # ensure metadata is dict, not None
         )
+>>>>>>> upstream/main
