@@ -42,6 +42,18 @@ Thank you for your interest in contributing! This document covers:
 
 ---
 
+## Repository Bootstrapping (for maintainers)
+
+To bootstrap repo setup (labels, milestones, issues):
+
+```bash
+# Locally
+export GH_TOKEN=your_token
+python scripts/setup_repo.py
+```
+
+-----
+
 ## Running Tests Locally
 
 ```bash

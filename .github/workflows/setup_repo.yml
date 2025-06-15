@@ -1,0 +1,25 @@
+name: Setup Repo Automation
+
+on:
+  push:
+    branches: [setup]
+
+jobs:
+  repo-setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install PyGithub
+
+      - name: Run setup script
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: python scripts/setup_repo.py
