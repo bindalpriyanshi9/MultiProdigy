@@ -46,7 +46,7 @@ Thank you for your interest in contributing! This document covers:
 
 ```bash
 # Install dev dependencies
-pip install -e .[dev]
+pip install -r requirements.txt
 
 # Run all tests
 pytest --maxfail=1 --disable-warnings -q
