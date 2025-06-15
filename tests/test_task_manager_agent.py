@@ -1,7 +1,7 @@
 # tests/test_task_manager_agent.py
 import unittest
-from prodigal_agent.agents.task_manager_agent import TaskManagerAgent
-from prodigal_agent.schemas.agent_config import AgentConfig
+from MultiProdigy.agents.task_manager_agent import TaskManagerAgent
+from MultiProdigy.schemas.agent_config import AgentConfig
 
 class TestTaskManagerAgent(unittest.TestCase):
     def test_task_manager_can_be_instantiated(self):

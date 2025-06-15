@@ -1,6 +1,6 @@
 import unittest
-from prodigal_agent.bus.message_bus import MessageBus
-from prodigal_agent.schemas.message import Message
+from MultiProdigy.bus.message_bus import MessageBus
+from MultiProdigy.schemas.message import Message
 
 
 class TestMessageBus(unittest.TestCase):

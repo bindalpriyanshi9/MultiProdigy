@@ -1,7 +1,7 @@
 # prodigal_agent/schema/agent_interface.py
 
 from abc import ABC, abstractmethod
-from prodigal_agent.schemas.message import Message
+from MultiProdigy.schemas.message import Message
 
 class AgentInterface(ABC):
     @abstractmethod

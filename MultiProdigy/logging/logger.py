@@ -1,5 +1,5 @@
 import logging
-from prodigal_agent.config import settings
+from MultiProdigy.config import settings
 
 def setup_logger(name: str) -> logging.Logger:
     logger = logging.getLogger(name)

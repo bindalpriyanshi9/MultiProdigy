@@ -1,6 +1,6 @@
 # prodigal_agent/agents/task_manager_agent.py
-from prodigal_agent.agents.agent_base import Agent
-from prodigal_agent.schemas.agent_config import AgentConfig
+from MultiProdigy.agents.agent_base import Agent
+from MultiProdigy.schemas.agent_config import AgentConfig
 
 class TaskManagerAgent(Agent):
     def __init__(self, config: AgentConfig):

@@ -1,6 +1,6 @@
 import subprocess
-from prodigal_agent.agents.agent_base import BaseAgent
-from prodigal_agent.schemas.schemas import Message
+from MultiProdigy.agents.agent_base import BaseAgent
+from MultiProdigy.schemas.schemas import Message
 
 class OllamaAgent(BaseAgent):
     def __init__(self, runtime):

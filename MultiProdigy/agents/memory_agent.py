@@ -1,7 +1,7 @@
 # prodigal_agent/agents/memory_agent.py
 
-from prodigal_agent.schemas.message import Message
-from prodigal_agent.agents.agent_base import BaseAgent
+from MultiProdigy.schemas.message import Message
+from MultiProdigy.agents.agent_base import BaseAgent
 
 class MemoryAgent(BaseAgent):
     def __init__(self, name: str, runtime):

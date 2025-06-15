@@ -1,6 +1,6 @@
-from prodigal_agent.bus.message_bus import MessageBus
-from prodigal_agent.agents.ollama_agent import OllamaAgent
-from prodigal_agent.agents.task_manager_agent import TaskManagerAgent
+from MultiProdigy.bus.message_bus import MessageBus
+from MultiProdigy.agents.ollama_agent import OllamaAgent
+from MultiProdigy.agents.task_manager_agent import TaskManagerAgent
 
 class Runtime:
     def __init__(self):
