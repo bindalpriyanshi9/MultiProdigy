@@ -22,3 +22,10 @@
 - [Architecture](docs/architecture.md)  
 - [Module Reference](docs/modules_reference.md)  
 - [Sample Demo](docs/sample_agent_demo.md) 
+
+--------
+
+### If you want to Contribute to the Project
+
+- Before Contributing, Read our [CODE OF CONDUCT](CODE_OF_CONDUCT.md) first
+- [Contribution](CONTRIBUTING.md)
