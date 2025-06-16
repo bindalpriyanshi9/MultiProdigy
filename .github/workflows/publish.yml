@@ -1,15 +1,11 @@
 name: package-publish
 
 on:
-  # Automatic run when you push a new version tag
   push:
     tags:
       - 'v*.*.*'
-
-  # Manual trigger from the Actions tab
   workflow_dispatch:
     inputs:
-      # Allow override of the git ref to build/publish
       ref:
         description: 'Git ref (branch or tag) to build/publish'
         required: false
@@ -21,21 +17,17 @@ jobs:
     outputs:
       package_name: ${{ steps.package_info.outputs.package_name }}
       new_version:  ${{ steps.package_info.outputs.new_version }}
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
         with:
-          # If manual, checkout the input ref; otherwise uses the tag
           ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.ref || github.ref }}
-
-      - name: Get Package Name and Version from pyproject.toml
-        id: package_info
+      - id: package_info
+        name: Get Package Info
         run: |
           PACKAGE_NAME=$(grep -Po '(?<=^name = ")[^"]+' pyproject.toml)
           NEW_VERSION=$(grep -Po '(?<=^version = ")[^"]+' pyproject.toml)
           echo "package_name=$PACKAGE_NAME" >> "$GITHUB_OUTPUT"
-          echo "new_version=$NEW_VERSION"  >> "$GITHUB_OUTPUT"
+          echo "new_version=$NEW_VERSION" >> "$GITHUB_OUTPUT"
 
   check_pypi:
     needs: details
@@ -47,13 +39,11 @@ jobs:
           resp=$(curl -sSf "https://pypi.org/pypi/${pkg}/json" || echo "{}")
           latest=$(echo "$resp" | grep -oP '"releases":\{"\K[^"]+' | sort -rV | head -1)
           echo "latest_previous_version=${latest:-0.0.0}" >> $GITHUB_ENV
-
       - name: Compare versions
         run: |
           NEW=${{ needs.details.outputs.new_version }}
-          LATEST=$latest_previous_version
-          if [[ "$NEW" == "$LATEST" || "$(printf '%s\n' "$LATEST" "$NEW" | sort -rV | head -1)" != "$NEW" ]]; then
-            echo "::error::New version $NEW is not greater than latest $LATEST"
+          if [[ "$NEW" == "$latest_previous_version" || "$(printf '%s\n' "$latest_previous_version" "$NEW" | sort -rV | head -1)" != "$NEW" ]]; then
+            echo "::error::New version $NEW is not greater than latest $latest_previous_version"
             exit 1
           fi
 
@@ -62,16 +52,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
-        with: 
+        with:
           python-version: '3.12'
+
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: generate poetry.lock
+        run: poetry lock
+
       - name: Install dependencies
         run: poetry install
+
       - name: Run tests
         run: poetry run pytest --disable-warnings
 
@@ -80,18 +77,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python
         uses: actions/setup-python@v4
-        with: 
+        with:
           python-version: '3.12'
+
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: generate poetry.lock
+        run: poetry lock
+
       - name: Install dependencies and build
         run: |
           poetry install
           poetry build
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -99,7 +103,6 @@ jobs:
           path: dist/
 
   publish:
-    name: Publish to PyPI
     needs: [build, details]
     runs-on: ubuntu-latest
     environment:
@@ -108,8 +111,7 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - name: Download built package
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
