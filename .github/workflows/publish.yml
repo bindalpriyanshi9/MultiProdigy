@@ -1,0 +1,126 @@
+name: package-publish
+
+# Run when you push a new tag like v0.1.0, or manually
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  details:
+    runs-on: ubuntu-latest
+    outputs:
+      package_name: ${{ steps.package_info.outputs.package_name }}
+      new_version:  ${{ steps.package_info.outputs.new_version }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get Package Name and Version from pyproject.toml
+        id: package_info
+        run: |
+          PACKAGE_NAME=$(grep -Po '(?<=^name = ")[^"]+' pyproject.toml)
+          NEW_VERSION=$(grep -Po '(?<=^version = ")[^"]+' pyproject.toml)
+          echo "package_name=$PACKAGE_NAME" >> "$GITHUB_OUTPUT"
+          echo "new_version=$NEW_VERSION"  >> "$GITHUB_OUTPUT"
+
+  check_pypi:
+    needs: details
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Fetch information from PyPI
+        run: |
+          pkg=${{ needs.details.outputs.package_name }}
+          resp=$(curl -sSf "https://pypi.org/pypi/${pkg}/json" || echo "{}")
+          latest=$(echo "$resp" | grep -oP '"releases":\{"\K[^"]+' | sort -rV | head -1)
+          echo "latest_previous_version=${latest:-0.0.0}" >> $GITHUB_ENV
+
+      - name: Compare versions
+        run: |
+          NEW=${{ needs.details.outputs.new_version }}
+          LATEST=$latest_previous_version
+          if [[ "$NEW" == "$LATEST" || "$(printf '%s\n' "$LATEST" "$NEW" | sort -rV | head -1)" != "$NEW" ]]; then
+            echo "::error::New version $NEW is not greater than latest $LATEST"
+            exit 1
+          fi
+
+  test:
+    needs: details
+    runs-on: ubuntu-latest
+    env:
+      NLTK_DATA: /home/runner/.cache/nltk
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run tests
+        run: poetry run pytest --disable-warnings
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies and build
+        run: |
+          poetry install
+          poetry build
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    name: Publish to PyPI
+    needs: [build, details]
+    runs-on: ubuntu-latest
+
+    # Use the protected "publish" environment you configured in your repo settings
+    environment:
+      name: publish-framework
+
+    permissions:
+      id-token: write    # for OIDC, if you decide to use it later
+      contents: read     # to checkout code
+
+    steps:
+      - name: Download built package
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}

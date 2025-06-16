@@ -129,7 +129,7 @@ If you're new, look for [good first issues](https://github.com/Abhay-Cerberus/Mu
 For discussions, ideas, or questions:
 
 * Use GitHub Discussions or Issues
-* Respect the [Code of Conduct](CODE_OF_CONDUCT.md)
+* Respect the [Code of Conduct](https://github.com/Abhay-Cerberus/MultiProdigy/blob/main/CODE_OF_CONDUCT.md)
 
 ---
 
