@@ -1,8 +1,12 @@
 name: Setup Repo Automation
 
 on:
-  push:
-    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Git ref (branch or tag) to build/publish'
+        required: false
+        default: 'main'
 
 jobs:
   repo-setup:
