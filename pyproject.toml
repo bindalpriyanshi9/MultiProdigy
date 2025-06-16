@@ -9,7 +9,7 @@ readme = "README.md"
 packages = [{ include = "MultiProdigy", from = "src" }]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.9,<4.0"
 pydantic-settings = ">=2.9.1"
 pydantic = ">=2.0"
 redis = ">=4.5.0"
