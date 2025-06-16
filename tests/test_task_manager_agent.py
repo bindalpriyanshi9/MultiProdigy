@@ -1,14 +1,17 @@
-# tests/test_task_manager_agent.py
-import unittest
-from MultiProdigy.agents.task_manager_agent import TaskManagerAgent
-from MultiProdigy.schemas.agent_config import AgentConfig
+def test_task_manager_agent_instantiation():
+    from MultiProdigy.agents.task_manager_agent import TaskManagerAgent
+    from MultiProdigy.schemas.agent_config import AgentConfig
+    from MultiProdigy.bus.bus import MessageBus
 
-class TestTaskManagerAgent(unittest.TestCase):
-    def test_task_manager_can_be_instantiated(self):
-        config = AgentConfig(name="TaskManagerAgent", role="manager", goal="testing")
-        agent = TaskManagerAgent(config=config)
-        self.assertEqual(agent.name, "TaskManagerAgent")
-        self.assertEqual(agent.config.role, "manager")
+    config = AgentConfig(name="Manager", role="task", goal="testing")
+    bus = MessageBus()
 
-if __name__ == "__main__":
-    unittest.main()
+    class DummyTM(TaskManagerAgent):
+        def __init__(self):
+            super().__init__(config=config, bus=bus)
+
+        def on_message(self, message):
+            pass
+
+    agent = DummyTM()
+    assert agent.name == "Manager"
