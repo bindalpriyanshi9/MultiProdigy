@@ -6,6 +6,10 @@ authors = ["Abhay-Cerberus"]
 license = "GPL-3.0-or-later"
 readme = "README.md"
 
+packages = [
+  { include = "MultiProdigy" }
+]
+
 [tool.poetry.dependencies]
 python = "^3.8"
 pydantic = ">=2.0"
