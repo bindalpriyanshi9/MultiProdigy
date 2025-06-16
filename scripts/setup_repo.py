@@ -1,7 +1,7 @@
 import os
 from github import Github, GithubException
 
-REPO_NAME = "your-username/MultiProdigy"  # ← update this
+REPO_NAME = "Abhay-Cerberus/MultiProdigy"  # ← update this (FORGOT TO UPDATE THIS XDD)
 ACCESS_TOKEN = os.environ.get("GH_TOKEN")
 if not ACCESS_TOKEN:
     raise RuntimeError("Missing GitHub Token. Please set GH_TOKEN in your environment.")
