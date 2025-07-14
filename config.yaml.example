@@ -1,0 +1,14 @@
+openai:
+  api_key: "your-openai-api-key"
+  endpoint: "https://api.openai.com/v1"
+  default_model: "gpt-4"
+
+gemini:
+  api_key: "your-gemini-api-key"
+  endpoint: "https://generativelanguage.googleapis.com/v1beta/models"
+  default_model: "gemini-pro"
+
+huggingface:
+  api_key: "your-hf-api-key"
+  endpoint: "https://api-inference.huggingface.co/models"
+  default_model: "HuggingFaceModel"
